@@ -29,7 +29,7 @@ set cc=80
 highlight ColorColumn ctermbg=7 guibg=orange
 
 " Cursorcolums
-set cursorcolumn
+" set cursorcolumn
 
 " Cursorline
 set cursorline
@@ -42,6 +42,9 @@ set encoding=UTF-8
 
 " Convert tabs to spaces
 set expandtab
+
+" Fold comments by default
+set fdm=marker fmr=\/\*,\*\/
 
 " Highlight Search results
 set hls
@@ -90,7 +93,7 @@ set tabstop=2
 set spell
 
 " Set split direction
-set splitbelow splitright
+set splitright splitbelow 
 
 " Set tags for ctags
 set tags=tags
@@ -98,7 +101,7 @@ set tags=tags
 " Set update time
 set updatetime=500
 " Set visual bell
-set visualbell t_vb=
+" set visualbell t_vb=
 
 " Tab to search for auto-complete suggestion
 set wildmenu
@@ -135,7 +138,7 @@ Plug 'preservim/nerdtree'
 Plug 'tpope/vim-commentary'
 
 " Live scratchpad
-Plug 'metakirby5/codi.vim'
+" Plug 'metakirby5/codi.vim'
 
 " Tmux navigator
 Plug 'christoomey/vim-tmux-navigator'
@@ -237,10 +240,10 @@ nmap diff <Plug>(GitGutterPreviewHunk)
 nmap <C-i> :IndentGuidesToggle<CR>
 
 " Window resize
-noremap w= :vert resize +3<CR>
-noremap w- :vert resize -3<CR>
-noremap h= :resize +3<CR>
-noremap h- :resize -3<CR>
+" nmap wi= :vert resize +3<CR>
+" nmap wi- :vert resize -3<CR>
+" nmap hi= :resize +3<CR>
+" nmap hi- :resize -3<CR>
 
 " Flip horizontal-vertical
 nmap ths <C-w>t<C-w>H
@@ -250,6 +253,24 @@ nmap tvs <C-w>t<C-w>K
 noremap z0 $
 noremap z9 ^
 noremap z8 0
+
+" Opt arrow navigation
+" imap <A-LEFT> b
+" imap <A-right> e
+" nnoremap <A-LEFT> b
+" nnoremap <A-RIGHT> e
+
+" Auto-bracket matching
+inoremap " ""<left>
+inoremap "" ""<left>
+inoremap ' ''<left>
+inoremap '' ''<left>
+inoremap ( ()<left>
+inoremap () ()<left>
+inoremap [ []<left>
+inoremap [] []<left>
+inoremap {} {  }<left><left>
+inoremap {<CR> {<CR>}<Esc>O
 
 """""""""""""""""""""""""""""""""""""""
 "                                     "
@@ -276,6 +297,17 @@ let g:NERDTreeColorMapCustom = {
     \ "Ignored"   : "#808080"
     \ }
 let g:NERDTreeIgnore = ['^node_modules$']
+
+" time in lightline
+let g:lightline = {
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'readonly', 'filename', 'modified', 'time' ] ]
+      \ },
+      \ 'component': {
+      \   'time': '%{strftime("%H:%M")}'
+      \ },
+      \ }
 
 " sync open file with NERDTree
 " Check if NERDTree is open or active
