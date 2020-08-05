@@ -99,7 +99,7 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 export MYVIMRC="$HOME/.vimrc"
-export EDITOR="/usr/local/bin/vim"
+export EDITOR="vim"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -129,7 +129,12 @@ gcme() {
   git clone https://github.com/acagastya/$1
   cd $1
   $EDITOR .
-  yarn
+}
+hostIt() {
+  git add .
+  git commit -m $1
+  yarn deploy
+  git push
 }
 alias tre=" tree src"
 
@@ -145,3 +150,14 @@ export PATH="/usr/local/opt/ruby/bin:$PATH"
 export WISDOM="/Users/acagastya/Documents/wow.txt"
 
 sort -Ru $WISDOM | head -n 1 | cowsay
+
+# GUILE
+export GUILE_LOAD_PATH="/usr/local/share/guile/site/3.0"
+export GUILE_LOAD_COMPILED_PATH="/usr/local/lib/guile/3.0/site-ccache"
+export GUILE_SYSTEM_EXTENSIONS_PATH="/usr/local/lib/guile/3.0/extensions"
+
+export GPG_TTY=$(tty)
+
+# vim bindings
+bindkey -v
+export KEYTIMEOUT=1

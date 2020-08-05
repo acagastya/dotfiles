@@ -5,7 +5,7 @@ set nocompatible
 syntax on
 
 " generate tags for ctags
-     command! GenTags !ctags -R --exclude=node_modules --exclude=coverage --languages=TypeScript .
+command! GenTags !ctags -R --exclude=node_modules --exclude=coverage --languages=TypeScript .
 
 " Enable filetype and indent plugin on
 filetype indent plugin on
@@ -27,9 +27,6 @@ set background=dark
 " ColorColumn
 set cc=80
 highlight ColorColumn ctermbg=7 guibg=orange
-
-" Cursorcolums
-" set cursorcolumn
 
 " Cursorline
 set cursorline
@@ -81,6 +78,8 @@ set shiftwidth=2
 set shortmess-=S
 " Set showmatch
 set showmatch
+" Jump between '<' and '>'
+set mps+=<:>
 
 " Enable smart indent
 set smartindent
@@ -93,7 +92,7 @@ set tabstop=2
 set spell
 
 " Set split direction
-set splitright splitbelow 
+set splitright splitbelow
 
 " Set tags for ctags
 set tags=tags
@@ -134,7 +133,7 @@ Plug 'leafgarland/typescript-vim'
 " File explorer
 Plug 'preservim/nerdtree'
 
-" Conver lines to comments
+" Convert lines to comments
 Plug 'tpope/vim-commentary'
 
 " Live scratchpad
@@ -176,6 +175,21 @@ Plug 'romainl/vim-qf'
 " Fuzzy file
 Plug 'junegunn/fzf.vim'
 
+" Pandoc
+" Plug 'vim-pandoc/vim-pandoc'
+Plug 'vim-pandoc/vim-pandoc-syntax'
+
+" MediaWiki
+Plug 'chikamichi/mediawiki.vim'
+
+" Grammarly
+Plug 'dpelle/vim-languagetool'
+
+" twitvim
+Plug 'twitvim/twitvim'
+
+" wikieditor
+Plug 'aquach/vim-mediawiki-editor'
 call plug#end()
 
 " Colour scheme
@@ -220,6 +234,11 @@ nnoremap zk :m .-2<CR>==
 vnoremap zj :m '>+1<CR>gv=gv
 vnoremap zk :m '<-2<CR>gv=gv
 
+" Treat long lines as break lines
+" https://github.com/nikolalsvk/dotfiles/blob/master/.vimrc#L54
+map j gj
+map k gk
+
 " mapping backspace
 set backspace=indent,eol,start
 
@@ -254,6 +273,10 @@ noremap z0 $
 noremap z9 ^
 noremap z8 0
 
+" whitespace
+nmap <leader>l :set list!<CR>
+set listchars=tab:▸\ ,space:·,eol:`
+
 " Opt arrow navigation
 " imap <A-LEFT> b
 " imap <A-right> e
@@ -261,16 +284,20 @@ noremap z8 0
 " nnoremap <A-RIGHT> e
 
 " Auto-bracket matching
-inoremap " ""<left>
-inoremap "" ""<left>
-inoremap ' ''<left>
-inoremap '' ''<left>
-inoremap ( ()<left>
-inoremap () ()<left>
-inoremap [ []<left>
-inoremap [] []<left>
-inoremap {} {  }<left><left>
-inoremap {<CR> {<CR>}<Esc>O
+" inoremap " ""<left>
+" inoremap "<Esc> "<Esc>i<right>
+" inoremap "" ""<left>
+
+" inoremap ' ''<left>
+" inoremap '<Esc> '<Esc>i<right>
+" inoremap '' ''<left>
+
+" inoremap ( ()<left>
+" inoremap () ()<left>
+" au FileType js,ts inoremap [ []<left>
+" au FileType js,ts inoremap [] []<left>
+" au FileType js,ts inoremap {} {  }<left><left>
+" au FileType js,ts inoremap {<CR> {<CR>}<Esc>O
 
 """""""""""""""""""""""""""""""""""""""
 "                                     "
@@ -326,3 +353,30 @@ endfunction
 
 " Highlight currently open buffer in NERDTree
 autocmd BufEnter * call SyncTree()
+
+
+function! SFX()
+  :silent :%s/\(.\+\)|url[ ]*=[ ]*/\1\r|url=/ge
+  :silent :%s/^|url[ ]*=[ ]*/|url    = /ge
+
+  :silent :%s/\(.\+\)|pub[ ]*=[ ]*/\1\r|pub=/ge
+  :silent :%s/^|pub[ ]*=[ ]*/|pub    = /ge
+
+  :silent :%s/\(.\+\)|date[ ]*=[ ]*/\1\r|date=/ge
+  :silent :%s/^|date[ ]*=[ ]*/|date   = /ge
+
+  :silent :%s/\(.\+\)|lang[ ]*=[ ]*/\1\r|lang=/ge
+  :silent :%s/^|lang[ ]*=[ ]*/|lang   = /ge
+
+  :silent :%s/\(.\+\)|title[ ]*=[ ]*/\1\r|title=/ge
+  :silent :%s/^|title[ ]*=[ ]*/|title  = /ge
+
+  :silent :%s/\(.\+\)|author[ ]*=[ ]*/\1\r|author=/ge
+  :silent :%s/^|author[ ]*=[ ]*/|author = /ge
+
+  :silent :%s/\(date   = .\+\d\d\d\d\)}}/\1\r}}/ge
+
+  :%s/cat\(egory\)\?: */Category:/gie
+endfunction
+
+:command! Ss call SFX()
